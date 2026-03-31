@@ -1,0 +1,30 @@
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/**/__pycache__/
+backend/*.db
+backend/.pytest_cache/
+*.pyc
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Docker
+pgdata/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test results
+test-results-*.txt
+
+# Claude
+.claude/
