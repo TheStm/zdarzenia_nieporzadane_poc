@@ -8,6 +8,7 @@ backend/.pytest_cache/
 
 # Node
 frontend/node_modules/
+frontend/package-lock.json
 frontend/dist/
 
 # IDE
