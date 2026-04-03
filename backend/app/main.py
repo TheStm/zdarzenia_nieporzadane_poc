@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.routers import dashboard, export, incidents, rca
+from app.routers import auth, dashboard, export, incidents, notifications, rca
 
 app = FastAPI(title="Zdarzenia Niepożądane API", version="0.1.0")
 
@@ -14,10 +14,12 @@ app.add_middleware(
 )
 
 
+app.include_router(auth.router)
 app.include_router(incidents.router)
 app.include_router(rca.router)
 app.include_router(dashboard.router)
 app.include_router(export.router)
+app.include_router(notifications.router)
 
 
 @app.get("/api/health")

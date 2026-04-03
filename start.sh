@@ -50,11 +50,10 @@ until compose exec -T db pg_isready -U zdarzenia > /dev/null 2>&1; do
 done
 echo "  Baza danych gotowa."
 
-echo "[4/5] Uruchamiam migracje bazy danych..."
+echo "[4/5] Aktualizuję schemat bazy danych..."
 compose exec -T backend alembic upgrade head
 
-echo "[5/5] Ładuję przykładowe dane..."
-compose exec -T backend pip install httpx -q > /dev/null 2>&1
+echo "[5/5] Ładuję przykładowe dane (pomija jeśli istnieją)..."
 compose exec -T backend python seed.py
 
 echo ""
@@ -65,6 +64,11 @@ echo ""
 echo "  Frontend:  http://localhost:5173"
 echo "  API:       http://localhost:8000"
 echo "  API Docs:  http://localhost:8000/docs"
+echo ""
+echo "  Konta testowe:"
+echo "    admin@example.com / admin123       (Administrator)"
+echo "    koordynator@example.com / koordynator123  (Koordynator)"
+echo "    reporter@example.com / reporter123  (Zgłaszający)"
 echo ""
 echo "  Aby zatrzymać:   docker compose down"
 echo "  Aby usunąć dane: docker compose down -v"

@@ -5,29 +5,20 @@ import type {
   Status,
   Category,
 } from "../types/incident";
+import { apiFetch } from "./client";
 
 const BASE = "/api/incidents";
 
-async function handleResponse<T>(response: Response): Promise<T> {
-  if (!response.ok) {
-    const body = await response.text();
-    throw new Error(`API error ${response.status}: ${body}`);
-  }
-  return response.json() as Promise<T>;
-}
-
 export async function createIncident(data: IncidentCreate): Promise<Incident> {
-  const response = await fetch(BASE, {
+  return apiFetch<Incident>(BASE, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
   });
-  return handleResponse<Incident>(response);
 }
 
 export async function getIncident(id: number): Promise<Incident> {
-  const response = await fetch(`${BASE}/${id}`);
-  return handleResponse<Incident>(response);
+  return apiFetch<Incident>(`${BASE}/${id}`);
 }
 
 export async function listIncidents(params?: {
@@ -45,18 +36,16 @@ export async function listIncidents(params?: {
 
   const query = searchParams.toString();
   const url = query ? `${BASE}?${query}` : BASE;
-  const response = await fetch(url);
-  return handleResponse<IncidentListResponse>(response);
+  return apiFetch<IncidentListResponse>(url);
 }
 
 export async function updateIncidentStatus(
   id: number,
   status: Status
 ): Promise<Incident> {
-  const response = await fetch(`${BASE}/${id}/status`, {
+  return apiFetch<Incident>(`${BASE}/${id}/status`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ status }),
   });
-  return handleResponse<Incident>(response);
 }

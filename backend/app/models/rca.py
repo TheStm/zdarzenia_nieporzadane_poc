@@ -59,6 +59,9 @@ class ActionItem(Base):
 
     description: Mapped[str] = mapped_column(Text, nullable=False)
     responsible_person: Mapped[str] = mapped_column(String(200), nullable=False)
+    responsible_user_id: Mapped[int | None] = mapped_column(
+        Integer, ForeignKey("users.id"), nullable=True
+    )
     deadline: Mapped[date] = mapped_column(Date, nullable=False)
     status: Mapped[str] = mapped_column(
         Enum(ActionStatus), nullable=False, default=ActionStatus.TODO

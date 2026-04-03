@@ -7,7 +7,9 @@ from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
 from sqlalchemy.orm import Session
 
 from app.database import get_db
+from app.dependencies import require_coordinator_or_admin
 from app.models.incident import Category, Incident, Status
+from app.models.user import User
 from app.services.incidents import list_incidents
 
 router = APIRouter(prefix="/api/export", tags=["export"])
@@ -44,6 +46,7 @@ def export_incidents(
     status: Status | None = None,
     category: Category | None = None,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_coordinator_or_admin),
 ):
     items, _ = list_incidents(db, status=status, category=category, skip=0, limit=10000)
 

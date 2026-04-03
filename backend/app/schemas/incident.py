@@ -39,6 +39,7 @@ class IncidentRead(BaseModel):
     preventive_suggestions: str | None
     patient_age: int | None
     patient_sex: str | None
+    reporter_user_id: int | None
     reporter_anonymous: bool
     reporter_name: str | None
     reporter_role: str | None
@@ -57,6 +58,7 @@ class IncidentListItem(BaseModel):
     category: Category
     severity: Severity
     status: Status
+    reporter_user_id: int | None
     created_at: datetime
 
     model_config = {"from_attributes": True}

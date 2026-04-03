@@ -63,6 +63,7 @@ def create_action(db: Session, rca_id: int, data: ActionItemCreate) -> ActionIte
         rca_id=rca_id,
         description=data.description,
         responsible_person=data.responsible_person,
+        responsible_user_id=data.responsible_user_id,
         deadline=data.deadline,
         status=ActionStatus.TODO,
     )

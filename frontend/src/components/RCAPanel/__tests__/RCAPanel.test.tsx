@@ -1,9 +1,21 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { RCAPanel } from "../RCAPanel";
 
+vi.mock("../../../api/rca", () => ({
+  createRCA: vi.fn(),
+  getRCA: vi.fn(),
+  updateRCA: vi.fn(),
+  createAction: vi.fn(),
+  listActions: vi.fn().mockResolvedValue([]),
+  updateAction: vi.fn(),
+}));
+
 describe("RCAPanel", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
   it("shows create button when no RCA exists", () => {
     render(<RCAPanel incidentId={1} rca={null} onUpdate={vi.fn()} />);
     expect(screen.getByRole("button", { name: /rozpocznij analizę/i })).toBeInTheDocument();

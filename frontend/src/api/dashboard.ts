@@ -1,3 +1,5 @@
+import { apiFetch } from "./client";
+
 export interface OpenRCA {
   rca_id: number;
   incident_id: number;
@@ -44,7 +46,5 @@ export interface DashboardStatsData {
 }
 
 export async function fetchDashboardStats(): Promise<DashboardStatsData> {
-  const r = await fetch("/api/dashboard/stats");
-  if (!r.ok) throw new Error(`API error ${r.status}`);
-  return r.json() as Promise<DashboardStatsData>;
+  return apiFetch<DashboardStatsData>("/api/dashboard/stats");
 }

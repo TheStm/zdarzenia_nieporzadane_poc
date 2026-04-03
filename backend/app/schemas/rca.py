@@ -38,6 +38,7 @@ class RCAUpdate(BaseModel):
 class ActionItemCreate(BaseModel):
     description: str = Field(min_length=1)
     responsible_person: str = Field(min_length=1, max_length=200)
+    responsible_user_id: int | None = None
     deadline: date
 
 
@@ -46,6 +47,7 @@ class ActionItemRead(BaseModel):
     rca_id: int
     description: str
     responsible_person: str
+    responsible_user_id: int | None
     deadline: date
     status: ActionStatus
     completion_notes: str | None
@@ -59,6 +61,7 @@ class ActionItemRead(BaseModel):
 class ActionItemUpdate(BaseModel):
     description: str | None = None
     responsible_person: str | None = None
+    responsible_user_id: int | None = None
     deadline: date | None = None
     status: ActionStatus | None = None
     completion_notes: str | None = None

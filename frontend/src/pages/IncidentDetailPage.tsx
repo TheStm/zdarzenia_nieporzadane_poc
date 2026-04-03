@@ -9,6 +9,7 @@ import {
 } from "../types/incident";
 import type { EventType, Category, Severity } from "../types/incident";
 import { RCAPanel } from "../components/RCAPanel/RCAPanel";
+import { useAuth } from "../context/AuthContext";
 
 const SEVERITY_BADGE: Record<Severity, string> = {
   0: "bg-gray-100 text-gray-700", 1: "bg-green-100 text-green-700",
@@ -25,6 +26,9 @@ const STATUS_BADGE: Record<Status, string> = {
 
 export function IncidentDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const { user } = useAuth();
+  const isStaff = user?.role === "coordinator" || user?.role === "admin";
+
   const [incident, setIncident] = useState<Incident | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,17 +37,18 @@ export function IncidentDetailPage() {
 
   const loadData = useCallback(() => {
     if (!id) return;
-    Promise.all([
+    const promises: [Promise<Incident>, Promise<RCAAnalysis | null>] = [
       getIncident(Number(id)),
-      getRCA(Number(id)),
-    ])
+      isStaff ? getRCA(Number(id)) : Promise.resolve(null),
+    ];
+    Promise.all(promises)
       .then(([inc, rcaData]) => {
         setIncident(inc);
         setRca(rcaData);
       })
       .catch((err) => setError(err instanceof Error ? err.message : "Błąd"))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, isStaff]);
 
   useEffect(() => { loadData(); }, [loadData]);
 
@@ -57,13 +62,15 @@ export function IncidentDetailPage() {
     }
   }
 
+  const backLink = user?.role === "reporter" ? "/my-incidents" : "/incidents";
+
   if (loading) return <div className="bg-white rounded-xl shadow-sm p-12 text-center text-gray-400">Ładowanie...</div>;
   if (error) return <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">{error}</div>;
   if (!incident) return <div className="bg-white rounded-xl shadow-sm p-12 text-center text-gray-400">Nie znaleziono zgłoszenia</div>;
 
   return (
     <div>
-      <Link to="/" className="text-blue-600 hover:text-blue-800 text-sm mb-4 inline-block">{"\u2190"} Wróć do listy</Link>
+      <Link to={backLink} className="text-blue-600 hover:text-blue-800 text-sm mb-4 inline-block">{"\u2190"} Wróć do listy</Link>
 
       <div className="flex items-center gap-4 mb-6">
         <h1 className="text-2xl font-bold text-gray-900">ZN-{String(incident.id).padStart(4, "0")}</h1>
@@ -75,21 +82,23 @@ export function IncidentDetailPage() {
         </span>
       </div>
 
-      {/* Status change */}
-      <div className="bg-white rounded-xl shadow-sm p-4 mb-6 flex items-center gap-3">
-        <span className="text-sm font-medium text-gray-700">Zmień status:</span>
-        <select
-          value={incident.status}
-          onChange={(e) => handleStatusChange(e.target.value as Status)}
-          className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-        >
-          {Object.entries(STATUS_LABELS).map(([val, label]) => (
-            <option key={val} value={val}>{label}</option>
-          ))}
-        </select>
-      </div>
+      {/* Status change — only for coordinator/admin */}
+      {isStaff && (
+        <div className="bg-white rounded-xl shadow-sm p-4 mb-6 flex items-center gap-3">
+          <span className="text-sm font-medium text-gray-700">Zmień status:</span>
+          <select
+            value={incident.status}
+            onChange={(e) => handleStatusChange(e.target.value as Status)}
+            className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+          >
+            {Object.entries(STATUS_LABELS).map(([val, label]) => (
+              <option key={val} value={val}>{label}</option>
+            ))}
+          </select>
+        </div>
+      )}
 
-      {/* Tabs */}
+      {/* Tabs — RCA tab only for staff */}
       <div className="flex gap-1 mb-4 border-b border-gray-200">
         <button
           onClick={() => setTab("details")}
@@ -97,12 +106,14 @@ export function IncidentDetailPage() {
         >
           Szczegóły
         </button>
-        <button
-          onClick={() => setTab("rca")}
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === "rca" ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700"}`}
-        >
-          RCA i Działania
-        </button>
+        {isStaff && (
+          <button
+            onClick={() => setTab("rca")}
+            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === "rca" ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700"}`}
+          >
+            RCA i Działania
+          </button>
+        )}
       </div>
 
       {tab === "details" && (
@@ -124,7 +135,7 @@ export function IncidentDetailPage() {
         </div>
       )}
 
-      {tab === "rca" && (
+      {tab === "rca" && isStaff && (
         <RCAPanel incidentId={incident.id} rca={rca} onUpdate={loadData} />
       )}
     </div>

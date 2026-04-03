@@ -10,6 +10,9 @@ backend/.pytest_cache/
 frontend/node_modules/
 frontend/package-lock.json
 frontend/dist/
+e2e/node_modules/
+e2e/test-results/
+e2e/playwright-report/
 
 # IDE
 .idea/

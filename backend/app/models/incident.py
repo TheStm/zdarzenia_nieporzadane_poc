@@ -1,7 +1,7 @@
 import enum
 from datetime import datetime
 
-from sqlalchemy import DateTime, Enum, Integer, String, Text, Boolean, func
+from sqlalchemy import DateTime, Enum, ForeignKey, Integer, String, Text, Boolean, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database import Base
@@ -75,7 +75,12 @@ class Incident(Base):
     patient_age: Mapped[int | None] = mapped_column(Integer, nullable=True)
     patient_sex: Mapped[str | None] = mapped_column(String(10), nullable=True)
 
-    # Reporter
+    # Reporter (linked to user)
+    reporter_user_id: Mapped[int | None] = mapped_column(
+        Integer, ForeignKey("users.id"), nullable=True
+    )
+
+    # Reporter (text fields, kept for backward compat and anonymous reports)
     reporter_anonymous: Mapped[bool] = mapped_column(Boolean, default=False)
     reporter_name: Mapped[str | None] = mapped_column(String(200), nullable=True)
     reporter_role: Mapped[str | None] = mapped_column(String(100), nullable=True)

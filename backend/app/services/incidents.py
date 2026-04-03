@@ -5,9 +5,10 @@ from app.models.incident import Category, Incident, Status
 from app.schemas.incident import IncidentCreate, IncidentStatusUpdate
 
 
-def create_incident(db: Session, data: IncidentCreate) -> Incident:
+def create_incident(db: Session, data: IncidentCreate, user_id: int | None = None) -> Incident:
     incident = Incident(**data.model_dump())
     incident.status = Status.NEW
+    incident.reporter_user_id = user_id
     db.add(incident)
     db.commit()
     db.refresh(incident)
@@ -24,6 +25,7 @@ def list_incidents(
     category: Category | None = None,
     skip: int = 0,
     limit: int = 50,
+    user_id: int | None = None,
 ) -> tuple[list[Incident], int]:
     query = db.query(Incident)
 
@@ -31,6 +33,8 @@ def list_incidents(
         query = query.filter(Incident.status == status)
     if category is not None:
         query = query.filter(Incident.category == category)
+    if user_id is not None:
+        query = query.filter(Incident.reporter_user_id == user_id)
 
     total = query.count()
     items = query.order_by(Incident.created_at.desc()).offset(skip).limit(limit).all()
