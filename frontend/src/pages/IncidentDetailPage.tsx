@@ -64,32 +64,32 @@ export function IncidentDetailPage() {
 
   const backLink = user?.role === "reporter" ? "/my-incidents" : "/incidents";
 
-  if (loading) return <div className="bg-white rounded-xl shadow-sm p-12 text-center text-gray-400">Ładowanie...</div>;
-  if (error) return <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">{error}</div>;
-  if (!incident) return <div className="bg-white rounded-xl shadow-sm p-12 text-center text-gray-400">Nie znaleziono zgłoszenia</div>;
+  if (loading) return <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-12 text-center text-gray-400">Ładowanie...</div>;
+  if (error) return <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md">{error}</div>;
+  if (!incident) return <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-12 text-center text-gray-400">Nie znaleziono zgłoszenia</div>;
 
   return (
     <div>
-      <Link to={backLink} className="text-blue-600 hover:text-blue-800 text-sm mb-4 inline-block">{"\u2190"} Wróć do listy</Link>
+      <Link to={backLink} className="text-zdarzenia-600 hover:text-zdarzenia-800 text-sm mb-4 inline-block">{"\u2190"} Wróć do listy</Link>
 
       <div className="flex items-center gap-4 mb-6">
         <h1 className="text-2xl font-bold text-gray-900">ZN-{String(incident.id).padStart(4, "0")}</h1>
-        <span className={`px-3 py-1 rounded-full text-sm ${SEVERITY_BADGE[incident.severity as Severity]}`}>
+        <span className={`inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold transition-colors ${SEVERITY_BADGE[incident.severity as Severity]}`}>
           {SEVERITY_LABELS[incident.severity as Severity]}
         </span>
-        <span className={`px-3 py-1 rounded-full text-sm ${STATUS_BADGE[incident.status as Status]}`}>
+        <span className={`inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold transition-colors ${STATUS_BADGE[incident.status as Status]}`}>
           {STATUS_LABELS[incident.status as Status]}
         </span>
       </div>
 
       {/* Status change — only for coordinator/admin */}
       {isStaff && (
-        <div className="bg-white rounded-xl shadow-sm p-4 mb-6 flex items-center gap-3">
+        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-4 mb-6 flex items-center gap-3">
           <span className="text-sm font-medium text-gray-700">Zmień status:</span>
           <select
             value={incident.status}
             onChange={(e) => handleStatusChange(e.target.value as Status)}
-            className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none"
+            className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             {Object.entries(STATUS_LABELS).map(([val, label]) => (
               <option key={val} value={val}>{label}</option>
@@ -102,14 +102,14 @@ export function IncidentDetailPage() {
       <div className="flex gap-1 mb-4 border-b border-gray-200">
         <button
           onClick={() => setTab("details")}
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === "details" ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700"}`}
+          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === "details" ? "border-zdarzenia-600 text-zdarzenia-600" : "border-transparent text-gray-500 hover:text-gray-700"}`}
         >
           Szczegóły
         </button>
         {isStaff && (
           <button
             onClick={() => setTab("rca")}
-            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === "rca" ? "border-blue-600 text-blue-600" : "border-transparent text-gray-500 hover:text-gray-700"}`}
+            className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${tab === "rca" ? "border-zdarzenia-600 text-zdarzenia-600" : "border-transparent text-gray-500 hover:text-gray-700"}`}
           >
             RCA i Działania
           </button>
@@ -117,7 +117,7 @@ export function IncidentDetailPage() {
       </div>
 
       {tab === "details" && (
-        <div className="bg-white rounded-xl shadow-sm divide-y divide-gray-100">
+        <div className="rounded-lg border bg-card text-card-foreground shadow-sm divide-y divide-gray-100">
           <Row label="Typ zdarzenia" value={EVENT_TYPE_LABELS[incident.event_type as EventType]} />
           <Row label="Data zdarzenia" value={new Date(incident.event_date).toLocaleString("pl-PL")} />
           <Row label="Oddział" value={incident.department} />

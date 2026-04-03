@@ -28,7 +28,7 @@ export function StatisticsPage() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-xl shadow-sm p-12 text-center text-gray-400">
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-12 text-center text-gray-400">
         Ładowanie...
       </div>
     );
@@ -39,7 +39,7 @@ export function StatisticsPage() {
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Statystyki</h1>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-4">
           {error}
         </div>
       )}

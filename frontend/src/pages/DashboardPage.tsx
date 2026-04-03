@@ -42,17 +42,17 @@ export function DashboardPage() {
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
         <div className="flex gap-2">
-          <a href="/api/export/incidents.xlsx" className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+          <a href="/api/export/incidents.xlsx" className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
             Eksport Excel
           </a>
-          <Link to="/report" className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+          <Link to="/report" className="inline-flex h-10 items-center justify-center rounded-md bg-zdarzenia-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zdarzenia-600/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
             + Zgłoś zdarzenie
           </Link>
         </div>
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">{error}</div>
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-4">{error}</div>
       )}
 
       {/* Stat cards */}
@@ -85,14 +85,14 @@ export function DashboardPage() {
       {/* Filters + full table */}
       <div className="flex gap-3 mb-4">
         <select value={filterStatus} onChange={(e) => setFilterStatus(e.target.value as Status | "")}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+          className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
           <option value="">Wszystkie statusy</option>
           {Object.entries(STATUS_LABELS).map(([val, label]) => (
             <option key={val} value={val}>{label}</option>
           ))}
         </select>
         <select value={filterCategory} onChange={(e) => setFilterCategory(e.target.value as Category | "")}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none">
+          className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
           <option value="">Wszystkie kategorie</option>
           {Object.entries(CATEGORY_LABELS).map(([val, label]) => (
             <option key={val} value={val}>{val}. {label}</option>
@@ -101,7 +101,7 @@ export function DashboardPage() {
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-xl shadow-sm p-12 text-center text-gray-400">Ładowanie...</div>
+        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-12 text-center text-gray-400">Ładowanie...</div>
       ) : (
         <IncidentList items={items} total={total} />
       )}

@@ -17,7 +17,7 @@ function daysUntil(deadline: string): number {
 export function PendingActionsPanel({ actions }: Props) {
   if (actions.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-sm p-5">
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-5">
         <h3 className="text-sm font-semibold text-gray-700 mb-3">Działania naprawcze</h3>
         <p className="text-gray-400 text-sm text-center py-4">Brak oczekujących działań</p>
       </div>
@@ -25,17 +25,16 @@ export function PendingActionsPanel({ actions }: Props) {
   }
 
   const overdue = actions.filter((a) => isOverdue(a.deadline));
-  const upcoming = actions.filter((a) => !isOverdue(a.deadline));
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-5">
+    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-5">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-semibold text-gray-700">Działania naprawcze</h3>
         <div className="flex gap-1">
           {overdue.length > 0 && (
             <span className="bg-red-100 text-red-700 text-xs font-medium px-2 py-0.5 rounded-full">{overdue.length} przeterminowanych</span>
           )}
-          <span className="bg-blue-100 text-blue-700 text-xs font-medium px-2 py-0.5 rounded-full">{actions.length} otwartych</span>
+          <span className="bg-zdarzenia-100 text-zdarzenia-700 text-xs font-medium px-2 py-0.5 rounded-full">{actions.length} otwartych</span>
         </div>
       </div>
       <div className="space-y-2">
@@ -44,7 +43,7 @@ export function PendingActionsPanel({ actions }: Props) {
           const days = daysUntil(action.deadline);
           return (
             <Link to={`/incidents/${action.incident_id}`} key={action.action_id}
-              className={`block p-3 rounded-lg border transition-colors ${overdueBool ? "border-red-200 bg-red-50 hover:border-red-300" : "border-gray-200 hover:border-blue-300 hover:bg-blue-50/50"}`}>
+              className={`block p-3 rounded-lg border transition-colors ${overdueBool ? "border-red-200 bg-red-50 hover:border-red-300" : "border-gray-200 hover:border-zdarzenia-300 hover:bg-zdarzenia-50/50"}`}>
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
                   <p className="text-sm text-gray-900 truncate">{action.description}</p>

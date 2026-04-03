@@ -91,7 +91,7 @@ export function IncidentForm({ onSubmit }: Props) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-6">
+    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-6">
       {/* Stepper */}
       <div className="flex items-center mb-8 overflow-x-auto">
         {STEP_NAMES.map((name, i) => {
@@ -101,21 +101,21 @@ export function IncidentForm({ onSubmit }: Props) {
           return (
             <div key={name} className="flex items-center">
               {i > 0 && (
-                <div className={`w-8 h-0.5 mx-1 ${isDone ? "bg-blue-500" : "bg-gray-200"}`} />
+                <div className={`w-8 h-0.5 mx-1 ${isDone ? "bg-zdarzenia-500" : "bg-gray-200"}`} />
               )}
               <div className="flex flex-col items-center min-w-[60px]">
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
                     isActive
-                      ? "bg-blue-600 text-white"
+                      ? "bg-zdarzenia-600 text-white"
                       : isDone
-                        ? "bg-blue-100 text-blue-700"
+                        ? "bg-zdarzenia-100 text-zdarzenia-700"
                         : "bg-gray-100 text-gray-400"
                   }`}
                 >
                   {isDone ? "\u2713" : stepNum}
                 </div>
-                <span className={`text-xs mt-1 whitespace-nowrap ${isActive ? "text-blue-600 font-medium" : "text-gray-400"}`}>
+                <span className={`text-xs mt-1 whitespace-nowrap ${isActive ? "text-zdarzenia-600 font-medium" : "text-gray-400"}`}>
                   {name}
                 </span>
               </div>
@@ -191,7 +191,7 @@ export function IncidentForm({ onSubmit }: Props) {
           <button
             type="button"
             onClick={handleBack}
-            className="px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             Wstecz
           </button>
@@ -200,7 +200,7 @@ export function IncidentForm({ onSubmit }: Props) {
           <button
             type="button"
             onClick={handleNext}
-            className="px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+            className="inline-flex h-10 items-center justify-center rounded-md bg-zdarzenia-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zdarzenia-600/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
           >
             Dalej
           </button>
@@ -209,7 +209,7 @@ export function IncidentForm({ onSubmit }: Props) {
           <button
             type="button"
             onClick={handleSubmit}
-            className="px-5 py-2.5 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+            className="inline-flex h-10 items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
           >
             Wyślij zgłoszenie
           </button>

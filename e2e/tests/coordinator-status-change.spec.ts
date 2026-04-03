@@ -50,7 +50,7 @@ test.describe("Coordinator changes incident status", () => {
     await loginAsReporter(page);
 
     await page.getByRole("button", { name: "Powiadomienia" }).click();
-    const dropdown = page.locator(".absolute.right-0");
+    const dropdown = page.getByTestId("notification-dropdown");
     await expect(dropdown).toBeVisible();
 
     // Reporter should see notification about status change

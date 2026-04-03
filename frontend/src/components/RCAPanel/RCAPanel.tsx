@@ -10,7 +10,7 @@ const RCA_STATUS_BADGE: Record<RCAStatus, string> = {
   completed: "bg-green-100 text-green-700",
 };
 
-const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none";
+const inputClass = "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
 const labelClass = "block text-sm font-medium text-gray-700 mb-1";
 
 interface Props {
@@ -64,7 +64,7 @@ export function RCAPanel({ incidentId, rca, onUpdate }: Props) {
 
   if (!rca) {
     return (
-      <div className="bg-white rounded-xl shadow-sm p-8 text-center">
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-8 text-center">
         <div className="text-gray-400 mb-4">
           <svg className="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-3-3v6m-7 4h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -74,7 +74,7 @@ export function RCAPanel({ incidentId, rca, onUpdate }: Props) {
         <button
           onClick={handleCreate}
           disabled={creating}
-          className="px-5 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50 transition-colors"
+          className="inline-flex h-10 items-center justify-center rounded-md bg-zdarzenia-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zdarzenia-600/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
         >
           {creating ? "Tworzenie..." : "Rozpocznij analizę RCA"}
         </button>
@@ -85,10 +85,10 @@ export function RCAPanel({ incidentId, rca, onUpdate }: Props) {
   return (
     <div className="space-y-6">
       {/* RCA Header */}
-      <div className="bg-white rounded-xl shadow-sm p-5">
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-5">
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-900">Analiza przyczyn źródłowych (RCA)</h3>
-          <span className={`px-3 py-1 rounded-full text-xs font-medium ${RCA_STATUS_BADGE[rca.status]}`}>
+          <span className={`inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold transition-colors ${RCA_STATUS_BADGE[rca.status]}`}>
             {RCA_STATUS_LABELS[rca.status]}
           </span>
         </div>
@@ -138,18 +138,18 @@ export function RCAPanel({ incidentId, rca, onUpdate }: Props) {
 
         <div className="flex gap-3 mt-6 pt-4 border-t border-gray-100">
           <button onClick={handleSave} disabled={saving}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 disabled:opacity-50">
+            className="inline-flex h-10 items-center justify-center rounded-md bg-zdarzenia-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zdarzenia-600/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
             {saving ? "Zapisywanie..." : "Zapisz"}
           </button>
           {rca.status === "draft" && (
             <button onClick={() => handleStatusChange("in_progress")} disabled={saving}
-              className="px-4 py-2 bg-amber-500 text-white rounded-lg text-sm font-medium hover:bg-amber-600 disabled:opacity-50">
+              className="inline-flex h-10 items-center justify-center rounded-md bg-amber-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-amber-500/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
               Rozpocznij analizę
             </button>
           )}
           {rca.status === "in_progress" && (
             <button onClick={() => handleStatusChange("completed")} disabled={saving}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 disabled:opacity-50">
+              className="inline-flex h-10 items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
               Zakończ analizę
             </button>
           )}

@@ -15,7 +15,7 @@ export function CategoryChart({ data }: Props) {
   const max = Math.max(...entries.map(([, v]) => v));
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-5">
+    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-5">
       <h3 className="text-sm font-semibold text-gray-700 mb-4">Top kategorie</h3>
       <div className="space-y-3">
         {entries.map(([key, value]) => (
@@ -26,7 +26,7 @@ export function CategoryChart({ data }: Props) {
             </div>
             <div className="w-full bg-gray-100 rounded-full h-2">
               <div
-                className="bg-blue-500 h-2 rounded-full transition-all"
+                className="bg-zdarzenia-500 h-2 rounded-full transition-all"
                 style={{ width: `${(value / max) * 100}%` }}
               />
             </div>

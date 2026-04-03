@@ -11,7 +11,7 @@ interface Props {
   onChangeReporterRole: (v: string) => void;
 }
 
-const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none";
+const inputClass = "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
 const labelClass = "block text-sm font-medium text-gray-700 mb-1";
 
 export function StepPatientData({ age, sex, anonymous, reporterName, reporterRole, onChangeAge, onChangeSex, onChangeAnonymous, onChangeReporterName, onChangeReporterRole }: Props) {
@@ -38,7 +38,7 @@ export function StepPatientData({ age, sex, anonymous, reporterName, reporterRol
         </div>
       </div>
 
-      <div className="bg-blue-50 rounded-lg p-4">
+      <div className="bg-zdarzenia-50 rounded-lg p-4">
         <h3 className="text-sm font-semibold text-gray-700 mb-3">Dane zgłaszającego</h3>
 
         <label className="flex items-center gap-2 mb-4 cursor-pointer">
