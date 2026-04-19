@@ -62,9 +62,9 @@ def seed():
 
     # --- UŻYTKOWNICY ---
     for email, password, name, role in [
-        ("admin@example.com", "admin123", "Administrator", "admin"),
-        ("koordynator@example.com", "koordynator123", "Anna Kowalska", "coordinator"),
-        ("reporter@example.com", "reporter123", "Jan Nowak", "reporter"),
+        ("admin", "admin", "Administrator", "admin"),
+        ("koordynator", "koordynator", "Anna Kowalska", "coordinator"),
+        ("reporter", "reporter", "Jan Nowak", "reporter"),
     ]:
         if not db.query(User).filter(User.email == email).first():
             db.add(User(
@@ -78,9 +78,9 @@ def seed():
     print("  Utworzono 3 użytkowników")
 
     # --- Logowanie ---
-    _tokens["admin"] = login("admin@example.com", "admin123")
-    _tokens["coordinator"] = login("koordynator@example.com", "koordynator123")
-    _tokens["reporter"] = login("reporter@example.com", "reporter123")
+    _tokens["admin"] = login("admin", "admin")
+    _tokens["coordinator"] = login("koordynator", "koordynator")
+    _tokens["reporter"] = login("reporter", "reporter")
 
     # --- STYCZEŃ (reporter zgłasza) ---
     post("/incidents", {"event_type": "ZN", "event_date": "2026-01-05T08:30:00", "department": "Oddział Chirurgii", "category": "A", "description": "Podczas zabiegu chirurgicznego operowano niewłaściwą stronę ciała pacjenta, błąd wykryto śródoperacyjnie i skorygowano bez powikłań", "severity": 3, "immediate_actions_taken": True, "immediate_actions_desc": "Przerwano zabieg, skorygowano stronę", "reporter_anonymous": False, "reporter_name": "Dr Wiśniewski", "reporter_role": "Lekarz"}, "reporter")

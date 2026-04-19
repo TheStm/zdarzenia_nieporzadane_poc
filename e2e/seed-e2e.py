@@ -17,9 +17,9 @@ Base.metadata.create_all(bind=engine)
 
 with Session(engine) as db:
     for email, password, name, role in [
-        ("admin@example.com", "admin123", "Administrator", "admin"),
-        ("koordynator@example.com", "koordynator123", "Anna Kowalska", "coordinator"),
-        ("reporter@example.com", "reporter123", "Jan Nowak", "reporter"),
+        ("admin", "admin", "Administrator", "admin"),
+        ("koordynator", "koordynator", "Anna Kowalska", "coordinator"),
+        ("reporter", "reporter", "Jan Nowak", "reporter"),
     ]:
         db.add(
             User(

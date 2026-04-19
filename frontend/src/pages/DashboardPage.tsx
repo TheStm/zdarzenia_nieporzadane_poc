@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { listIncidents } from "../api/incidents";
+import { listIncidents, downloadIncidentsExcel } from "../api/incidents";
 import { fetchDashboardStats, type DashboardStatsData } from "../api/dashboard";
 import { DashboardStats } from "../components/Dashboard/DashboardStats";
 import { CategoryChart } from "../components/Dashboard/CategoryChart";
@@ -21,6 +21,7 @@ export function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<Status | "">("");
   const [filterCategory, setFilterCategory] = useState<Category | "">("");
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -37,14 +38,29 @@ export function DashboardPage() {
       .finally(() => setLoading(false));
   }, [filterStatus, filterCategory]);
 
+  async function handleExport() {
+    setExporting(true);
+    try {
+      await downloadIncidentsExcel();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Błąd eksportu");
+    } finally {
+      setExporting(false);
+    }
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
         <div className="flex gap-2">
-          <a href="/api/export/incidents.xlsx" className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
-            Eksport Excel
-          </a>
+          <button
+            onClick={handleExport}
+            disabled={exporting}
+            className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50"
+          >
+            {exporting ? "Eksportowanie..." : "Eksport Excel"}
+          </button>
           <Link to="/report" className="inline-flex h-10 items-center justify-center rounded-md bg-zdarzenia-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zdarzenia-600/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
             + Zgłoś zdarzenie
           </Link>
