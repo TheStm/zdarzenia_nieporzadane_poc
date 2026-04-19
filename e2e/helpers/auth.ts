@@ -9,15 +9,15 @@ export async function login(page: Page, email: string, password: string) {
 }
 
 export async function loginAsReporter(page: Page) {
-  await login(page, "reporter@example.com", "reporter123");
+  await login(page, "reporter", "reporter");
 }
 
 export async function loginAsCoordinator(page: Page) {
-  await login(page, "koordynator@example.com", "koordynator123");
+  await login(page, "koordynator", "koordynator");
 }
 
 export async function loginAsAdmin(page: Page) {
-  await login(page, "admin@example.com", "admin123");
+  await login(page, "admin", "admin");
 }
 
 export async function logout(page: Page) {

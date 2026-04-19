@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { listIncidents } from "../api/incidents";
+import { listIncidents, downloadIncidentsExcel } from "../api/incidents";
 import { IncidentList } from "../components/IncidentList/IncidentList";
 import type { IncidentListItem, Status, Category } from "../types/incident";
 import { STATUS_LABELS, CATEGORY_LABELS } from "../types/incident";
@@ -12,6 +12,7 @@ export function IncidentsPage() {
   const [error, setError] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<Status | "">("");
   const [filterCategory, setFilterCategory] = useState<Category | "">("");
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -27,20 +28,35 @@ export function IncidentsPage() {
       .finally(() => setLoading(false));
   }, [filterStatus, filterCategory]);
 
+  async function handleExport() {
+    setExporting(true);
+    try {
+      await downloadIncidentsExcel({
+        status: filterStatus || undefined,
+        category: filterCategory || undefined,
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Błąd eksportu");
+    } finally {
+      setExporting(false);
+    }
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Zgłoszenia</h1>
         <div className="flex gap-2">
-          <a
-            href="/api/export/incidents.xlsx"
-            className="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+          <button
+            onClick={handleExport}
+            disabled={exporting}
+            className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50"
           >
-            Eksport Excel
-          </a>
+            {exporting ? "Eksportowanie..." : "Eksport Excel"}
+          </button>
           <Link
             to="/report"
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+            className="inline-flex h-10 items-center justify-center rounded-md bg-zdarzenia-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-zdarzenia-600/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           >
             + Zgłoś zdarzenie
           </Link>
@@ -48,7 +64,7 @@ export function IncidentsPage() {
       </div>
 
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md mb-4">
           {error}
         </div>
       )}
@@ -57,7 +73,7 @@ export function IncidentsPage() {
         <select
           value={filterStatus}
           onChange={(e) => setFilterStatus(e.target.value as Status | "")}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <option value="">Wszystkie statusy</option>
           {Object.entries(STATUS_LABELS).map(([val, label]) => (
@@ -69,7 +85,7 @@ export function IncidentsPage() {
         <select
           value={filterCategory}
           onChange={(e) => setFilterCategory(e.target.value as Category | "")}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+          className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           <option value="">Wszystkie kategorie</option>
           {Object.entries(CATEGORY_LABELS).map(([val, label]) => (
@@ -81,7 +97,7 @@ export function IncidentsPage() {
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-xl shadow-sm p-12 text-center text-gray-400">
+        <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-12 text-center text-gray-400">
           Ładowanie...
         </div>
       ) : (

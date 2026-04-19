@@ -36,16 +36,19 @@ describe("App", () => {
     vi.clearAllMocks();
   });
 
-  it("renders navigation with app title", async () => {
+  it("renders sidebar with app title", async () => {
     renderApp();
     expect(await screen.findByText("Zdarzenia Niepożądane")).toBeInTheDocument();
   });
 
-  it("renders navigation links for coordinator", async () => {
+  it("renders navigation links for coordinator in sidebar", async () => {
     renderApp();
-    expect(await screen.findByRole("link", { name: "Zgłoś zdarzenie" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Zgłoszenia" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Statystyki" })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Działania" })).toBeInTheDocument();
+    // Wait for auth to resolve and sidebar to render
+    expect(await screen.findByText("Zdarzenia Niepożądane")).toBeInTheDocument();
+    // Sidebar has nav links; IncidentsPage also has a "Zgłoś zdarzenie" link, so use getAllBy
+    const reportLinks = screen.getAllByRole("link", { name: /Zgłoś zdarzenie/ });
+    expect(reportLinks.length).toBeGreaterThanOrEqual(1);
+    expect(screen.getByRole("link", { name: /Statystyki/ })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /Działania/ })).toBeInTheDocument();
   });
 });

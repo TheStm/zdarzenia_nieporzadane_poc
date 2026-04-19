@@ -18,7 +18,7 @@ export function RiskMatrix({ bySeverity }: Props) {
   const total = Object.values(bySeverity).reduce((a, b) => a + b, 0);
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-5">
+    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-5">
       <h3 className="text-sm font-semibold text-gray-700 mb-4">Rozkład ciężkości</h3>
       <div className="space-y-2">
         {severities.map((sev) => {

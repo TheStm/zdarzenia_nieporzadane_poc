@@ -82,7 +82,7 @@ export function NotificationBell() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setOpen(!open)}
-        className="relative px-2 py-1 text-blue-100 hover:bg-blue-600 rounded-md transition-colors"
+        className="relative px-2 py-1 text-gray-600 hover:bg-gray-100 rounded-md transition-colors"
         aria-label="Powiadomienia"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -101,13 +101,13 @@ export function NotificationBell() {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50 max-h-96 overflow-hidden flex flex-col">
+        <div data-testid="notification-dropdown" className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-lg border border-gray-200 z-50 max-h-96 overflow-hidden flex flex-col">
           <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
             <span className="font-medium text-gray-900 text-sm">Powiadomienia</span>
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-xs text-blue-600 hover:text-blue-800"
+                className="text-xs text-zdarzenia-600 hover:text-zdarzenia-800"
               >
                 Zaznacz wszystkie
               </button>
@@ -125,12 +125,12 @@ export function NotificationBell() {
                   key={notif.id}
                   onClick={() => handleClick(notif)}
                   className={`w-full text-left px-4 py-3 border-b border-gray-50 hover:bg-gray-50 transition-colors ${
-                    !notif.is_read ? "bg-blue-50" : ""
+                    !notif.is_read ? "bg-zdarzenia-50" : ""
                   }`}
                 >
                   <div className="flex items-start gap-2">
                     {!notif.is_read && (
-                      <span className="mt-1.5 w-2 h-2 bg-blue-500 rounded-full shrink-0" />
+                      <span className="mt-1.5 w-2 h-2 bg-zdarzenia-500 rounded-full shrink-0" />
                     )}
                     <div className={!notif.is_read ? "" : "pl-4"}>
                       <div className="text-sm font-medium text-gray-900">{notif.title}</div>

@@ -35,55 +35,55 @@ interface Props {
 export function IncidentList({ items, total }: Props) {
   if (items.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-sm p-12 text-center text-gray-400">
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-12 text-center text-gray-400">
         Brak zgłoszeń
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm overflow-hidden">
+    <div className="rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden">
       <div className="px-5 py-3 border-b border-gray-100 text-sm text-gray-500">
         Łącznie: {total}
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full">
-          <thead>
-            <tr className="bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              <th className="px-5 py-3">#</th>
-              <th className="px-5 py-3">Typ</th>
-              <th className="px-5 py-3">Data</th>
-              <th className="px-5 py-3">Oddział</th>
-              <th className="px-5 py-3">Kategoria</th>
-              <th className="px-5 py-3">Ciężkość</th>
-              <th className="px-5 py-3">Status</th>
+        <table className="w-full caption-bottom text-sm">
+          <thead className="[&_tr]:border-b">
+            <tr>
+              <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">#</th>
+              <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Typ</th>
+              <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Data</th>
+              <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Oddział</th>
+              <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Kategoria</th>
+              <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Ciężkość</th>
+              <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="[&_tr:last-child]:border-0">
             {items.map((item) => (
-              <tr key={item.id} className="hover:bg-gray-50 transition-colors">
-                <td className="px-5 py-3">
-                  <Link to={`/incidents/${item.id}`} className="text-blue-600 hover:text-blue-800 font-medium">
+              <tr key={item.id} className="border-b transition-colors hover:bg-muted/50">
+                <td className="p-4 align-middle">
+                  <Link to={`/incidents/${item.id}`} className="text-zdarzenia-600 hover:text-zdarzenia-800 font-medium">
                     ZN-{String(item.id).padStart(4, "0")}
                   </Link>
                 </td>
-                <td className="px-5 py-3 text-sm">
+                <td className="p-4 align-middle">
                   {EVENT_TYPE_LABELS[item.event_type as EventType]}
                 </td>
-                <td className="px-5 py-3 text-sm text-gray-600">
+                <td className="p-4 align-middle text-muted-foreground">
                   {new Date(item.event_date).toLocaleDateString("pl-PL")}
                 </td>
-                <td className="px-5 py-3 text-sm">{item.department}</td>
-                <td className="px-5 py-3 text-sm">
+                <td className="p-4 align-middle">{item.department}</td>
+                <td className="p-4 align-middle">
                   {CATEGORY_LABELS[item.category as Category]}
                 </td>
-                <td className="px-5 py-3">
-                  <span className={`inline-block px-2 py-0.5 rounded-full text-xs ${SEVERITY_BADGE[item.severity as Severity]}`}>
+                <td className="p-4 align-middle">
+                  <span className={`inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold transition-colors ${SEVERITY_BADGE[item.severity as Severity]}`}>
                     {SEVERITY_LABELS[item.severity as Severity]}
                   </span>
                 </td>
-                <td className="px-5 py-3">
-                  <span className={`inline-block px-2 py-0.5 rounded-full text-xs ${STATUS_BADGE[item.status as Status]}`}>
+                <td className="p-4 align-middle">
+                  <span className={`inline-flex items-center rounded-full border border-transparent px-2.5 py-0.5 text-xs font-semibold transition-colors ${STATUS_BADGE[item.status as Status]}`}>
                     {STATUS_LABELS[item.status as Status]}
                   </span>
                 </td>

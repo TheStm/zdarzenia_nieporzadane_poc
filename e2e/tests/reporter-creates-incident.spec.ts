@@ -32,7 +32,7 @@ test.describe("Reporter creates incident → coordinator gets notification", () 
     await page.getByRole("button", { name: "Powiadomienia" }).click();
 
     // Verify notification dropdown shows a notification about the new incident
-    const dropdown = page.locator(".absolute.right-0");
+    const dropdown = page.getByTestId("notification-dropdown");
     await expect(dropdown).toBeVisible();
 
     // Check that there's at least one "Nowe zgłoszenie" notification

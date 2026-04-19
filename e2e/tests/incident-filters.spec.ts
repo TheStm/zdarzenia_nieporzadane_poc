@@ -84,12 +84,16 @@ test.describe("Incident list filtering", () => {
     // Filter by "closed" — no incidents should be closed
     await statusSelect.selectOption("closed");
 
-    // Should show empty state or no rows
+    // Wait for loading to finish — either empty state or table rows appear
+    await expect(
+      page.getByText("Brak zgłoszeń").or(page.locator("table tbody tr").first()),
+    ).toBeVisible();
+
+    // Should show empty state or rows (from parallel tests)
     const rows = page.locator("table tbody tr");
     const rowCount = await rows.count();
     if (rowCount === 0) {
       await expect(page.getByText("Brak zgłoszeń")).toBeVisible();
     }
-    // (If rowCount > 0 from parallel tests creating + closing, that's also fine)
   });
 });

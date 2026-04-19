@@ -21,8 +21,8 @@ export function StepEventType({ value, onChange, error }: Props) {
         {EVENT_TYPES.map(({ type, desc, color }) => (
           <label
             key={type}
-            className={`flex items-start gap-3 p-4 rounded-lg border-2 cursor-pointer transition-all ${
-              value === type ? `${color} ring-2 ring-blue-500` : "border-gray-200 hover:border-gray-300"
+            className={`flex items-start gap-3 p-4 rounded-md border-2 cursor-pointer transition-all ${
+              value === type ? `${color} ring-2 ring-zdarzenia-500` : "border-gray-200 hover:border-gray-300"
             }`}
           >
             <input

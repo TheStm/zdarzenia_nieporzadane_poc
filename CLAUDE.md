@@ -72,7 +72,7 @@ Requires backend venv set up (`backend/.venv`) and frontend `node_modules` insta
 sudo bash start.sh   # build, migrate, seed — idempotent
 ```
 
-Test accounts: admin@example.com/admin123, koordynator@example.com/koordynator123, reporter@example.com/reporter123
+Test accounts: admin/admin, koordynator/koordynator, reporter/reporter
 
 ## Architecture
 

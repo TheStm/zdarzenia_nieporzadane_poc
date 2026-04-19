@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import type { RecentIncident } from "../../api/dashboard";
-import { CATEGORY_LABELS, EVENT_TYPE_LABELS, SEVERITY_LABELS, STATUS_LABELS } from "../../types/incident";
+import { CATEGORY_LABELS, SEVERITY_LABELS, STATUS_LABELS } from "../../types/incident";
 import type { Category, EventType, Severity, Status } from "../../types/incident";
 
 const SEVERITY_DOT: Record<Severity, string> = {
@@ -31,7 +31,7 @@ export function ActivityFeed({ incidents }: Props) {
   if (incidents.length === 0) return null;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-5">
+    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-5">
       <h3 className="text-sm font-semibold text-gray-700 mb-3">Ostatnie zgłoszenia</h3>
       <div className="space-y-0 divide-y divide-gray-100">
         {incidents.map((inc) => (

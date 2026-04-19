@@ -10,7 +10,7 @@ const ACTION_BADGE: Record<ActionStatus, string> = {
   overdue: "bg-red-100 text-red-700",
 };
 
-const inputClass = "w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none";
+const inputClass = "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50";
 
 interface Props {
   rcaId: number;
@@ -49,7 +49,7 @@ export function ActionList({ rcaId }: Props) {
   const completedCount = actions.filter((a) => a.status === "completed").length;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-5">
+    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-5">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-gray-900">
           Działania naprawcze
@@ -61,7 +61,7 @@ export function ActionList({ rcaId }: Props) {
         </h3>
         <button
           onClick={() => setShowForm(!showForm)}
-          className="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-medium hover:bg-blue-700"
+          className="inline-flex h-9 items-center justify-center rounded-md bg-zdarzenia-600 px-3 text-xs font-medium text-white transition-colors hover:bg-zdarzenia-600/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
         >
           + Dodaj działanie
         </button>
@@ -90,11 +90,11 @@ export function ActionList({ rcaId }: Props) {
           </div>
           <div className="flex gap-2">
             <button onClick={handleAdd} disabled={saving}
-              className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 disabled:opacity-50">
+              className="inline-flex h-10 items-center justify-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-green-600/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50">
               {saving ? "Dodawanie..." : "Dodaj"}
             </button>
             <button onClick={() => setShowForm(false)}
-              className="px-4 py-2 border border-gray-300 rounded-lg text-sm text-gray-600 hover:bg-gray-50">
+              className="inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2">
               Anuluj
             </button>
           </div>
@@ -112,7 +112,7 @@ export function ActionList({ rcaId }: Props) {
             <button
               onClick={() => handleStatusChange(action.id, action.status === "completed" ? "todo" : "completed")}
               className={`w-5 h-5 mt-0.5 rounded border-2 flex items-center justify-center shrink-0 transition-colors ${
-                action.status === "completed" ? "bg-green-500 border-green-500 text-white" : "border-gray-300 hover:border-blue-500"
+                action.status === "completed" ? "bg-green-500 border-green-500 text-white" : "border-gray-300 hover:border-zdarzenia-500"
               }`}
             >
               {action.status === "completed" && <span className="text-xs">{"\u2713"}</span>}

@@ -1,4 +1,6 @@
-import { BrowserRouter, Routes, Route, Link, useLocation, useNavigate, Navigate } from "react-router-dom";
+import { useState } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Menu } from "lucide-react";
 import { ReportPage } from "./pages/ReportPage";
 import { MyIncidentsPage } from "./pages/MyIncidentsPage";
 import { IncidentsPage } from "./pages/IncidentsPage";
@@ -8,49 +10,8 @@ import { ActionsPage } from "./pages/ActionsPage";
 import { LoginPage } from "./pages/LoginPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { useAuth } from "./context/AuthContext";
-import { ROLE_LABELS } from "./types/auth";
 import { NotificationBell } from "./components/NotificationBell";
-
-function NavLink({ to, children }: { to: string; children: React.ReactNode }) {
-  const location = useLocation();
-  const active = location.pathname === to;
-  return (
-    <Link
-      to={to}
-      className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-        active
-          ? "bg-blue-700 text-white"
-          : "text-blue-100 hover:bg-blue-600 hover:text-white"
-      }`}
-    >
-      {children}
-    </Link>
-  );
-}
-
-function UserMenu() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  if (!user) return null;
-
-  return (
-    <div className="flex items-center gap-3">
-      <span className="text-blue-200 text-sm">
-        {user.full_name} <span className="text-blue-400 text-xs">({ROLE_LABELS[user.role]})</span>
-      </span>
-      <button
-        onClick={() => {
-          logout();
-          navigate("/login");
-        }}
-        className="px-3 py-1 rounded-md text-sm text-blue-100 hover:bg-blue-600 transition-colors"
-      >
-        Wyloguj
-      </button>
-    </div>
-  );
-}
+import { Sidebar } from "./components/Sidebar";
 
 function HomeRedirect() {
   const { user, loading } = useAuth();
@@ -61,46 +22,56 @@ function HomeRedirect() {
 }
 
 function Layout() {
-  const { user } = useAuth();
-  const isStaff = user?.role === "coordinator" || user?.role === "admin";
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   return (
-    <div className="min-h-screen">
-      <nav className="bg-blue-800 shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2">
-              <span className="text-white text-xl font-bold">Zdarzenia Niepożądane</span>
-              <span className="text-blue-300 text-xs hidden sm:inline">System raportowania</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <NavLink to="/report">Zgłoś zdarzenie</NavLink>
-              {user?.role === "reporter" && (
-                <NavLink to="/my-incidents">Moje zgłoszenia</NavLink>
-              )}
-              {isStaff && (
-                <>
-                  <NavLink to="/incidents">Zgłoszenia</NavLink>
-                  <NavLink to="/statistics">Statystyki</NavLink>
-                  <NavLink to="/actions">Działania</NavLink>
-                </>
-              )}
+    <div className="h-screen flex overflow-hidden bg-gray-50">
+      <Sidebar
+        open={sidebarOpen}
+        onToggle={() => setSidebarOpen(!sidebarOpen)}
+        onClose={() => setSidebarOpen(false)}
+      />
+
+      {/* Mobile backdrop */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 z-20 bg-black/50 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Main content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Top header */}
+        <header className="bg-white shadow z-10">
+          <div className="px-4 py-3 flex items-center justify-between">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-1 rounded-md hover:bg-gray-100 md:hidden"
+              aria-label="Open menu"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+            <div className="flex-1 flex justify-end">
               <NotificationBell />
-              <UserMenu />
             </div>
           </div>
-        </div>
-      </nav>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Routes>
-          <Route path="/report" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
-          <Route path="/my-incidents" element={<ProtectedRoute allowedRoles={["reporter"]}><MyIncidentsPage /></ProtectedRoute>} />
-          <Route path="/incidents" element={<ProtectedRoute allowedRoles={["coordinator", "admin"]}><IncidentsPage /></ProtectedRoute>} />
-          <Route path="/incidents/:id" element={<ProtectedRoute><IncidentDetailPage /></ProtectedRoute>} />
-          <Route path="/statistics" element={<ProtectedRoute allowedRoles={["coordinator", "admin"]}><StatisticsPage /></ProtectedRoute>} />
-          <Route path="/actions" element={<ProtectedRoute allowedRoles={["coordinator", "admin"]}><ActionsPage /></ProtectedRoute>} />
-        </Routes>
-      </main>
+        </header>
+
+        {/* Main content area */}
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
+            <Routes>
+              <Route path="/report" element={<ProtectedRoute><ReportPage /></ProtectedRoute>} />
+              <Route path="/my-incidents" element={<ProtectedRoute allowedRoles={["reporter"]}><MyIncidentsPage /></ProtectedRoute>} />
+              <Route path="/incidents" element={<ProtectedRoute allowedRoles={["coordinator", "admin"]}><IncidentsPage /></ProtectedRoute>} />
+              <Route path="/incidents/:id" element={<ProtectedRoute><IncidentDetailPage /></ProtectedRoute>} />
+              <Route path="/statistics" element={<ProtectedRoute allowedRoles={["coordinator", "admin"]}><StatisticsPage /></ProtectedRoute>} />
+              <Route path="/actions" element={<ProtectedRoute allowedRoles={["coordinator", "admin"]}><ActionsPage /></ProtectedRoute>} />
+            </Routes>
+          </div>
+        </main>
+      </div>
     </div>
   );
 }

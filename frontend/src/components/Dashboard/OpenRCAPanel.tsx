@@ -22,7 +22,7 @@ interface Props {
 export function OpenRCAPanel({ rcas }: Props) {
   if (rcas.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-sm p-5">
+      <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-5">
         <h3 className="text-sm font-semibold text-gray-700 mb-3">Otwarte analizy RCA</h3>
         <p className="text-gray-400 text-sm text-center py-4">Brak otwartych analiz RCA</p>
       </div>
@@ -30,7 +30,7 @@ export function OpenRCAPanel({ rcas }: Props) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm p-5">
+    <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-5">
       <div className="flex items-center justify-between mb-3">
         <h3 className="text-sm font-semibold text-gray-700">Otwarte analizy RCA</h3>
         <span className="bg-orange-100 text-orange-700 text-xs font-medium px-2 py-0.5 rounded-full">{rcas.length}</span>
@@ -39,7 +39,7 @@ export function OpenRCAPanel({ rcas }: Props) {
         {rcas.map((rca) => {
           const progress = rca.total_actions > 0 ? (rca.completed_actions / rca.total_actions) * 100 : 0;
           return (
-            <Link to={`/incidents/${rca.incident_id}`} key={rca.rca_id} className="block p-3 rounded-lg border border-gray-200 hover:border-blue-300 hover:bg-blue-50/50 transition-colors">
+            <Link to={`/incidents/${rca.incident_id}`} key={rca.rca_id} className="block p-3 rounded-lg border border-gray-200 hover:border-zdarzenia-300 hover:bg-zdarzenia-50/50 transition-colors">
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-2">
                   <span className={`w-2 h-2 rounded-full ${SEVERITY_DOT[rca.severity as Severity]}`} />
